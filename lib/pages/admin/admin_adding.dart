@@ -1,5 +1,7 @@
-import 'package:find_pe/common/style/app_colors.dart';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:find_pe/common/style/app_colors.dart';
 import 'package:go_router/go_router.dart';
 
 class AdminAdding extends StatefulWidget {
@@ -16,41 +18,60 @@ class _AdminAddingState extends State<AdminAdding> {
   final TextEditingController _densityController = TextEditingController();
   final TextEditingController _meltIndexController = TextEditingController();
 
-  List<Map<String, String>> polietilenList = [
-    {"Firma": "Россия", "Name": "LD 03210 FE", "Legacy Name": "15303-003", "Density": "0.921", "Melt Index": "0.3"},
-    {"Firma": "Россия", "Name": "LD 20190 FE", "Legacy Name": "15803-020", "Density": "0.919", "Melt Index": "2.0"},
-    {"Firma": "Россия", "Name": "LD 08220 FE", "Legacy Name": "-", "Density": "0.921", "Melt Index": "0.8"},
-    {"Firma": "Россия", "Name": "LD 20220 FE", "Legacy Name": "-", "Density": "0.922", "Melt Index": "2.0"},
-    {"Firma": "Россия", "Name": "LD 04200 FE", "Legacy Name": "-", "Density": "0.920", "Melt Index": "0.4"},
-    {"Firma": "Россия", "Name": "LD 50210 EC", "Legacy Name": "-", "Density": "0.921", "Melt Index": "5.0"},
-    {"Firma": "Россия", "Name": "LD 75210 EC", "Legacy Name": "-", "Density": "0.921", "Melt Index": "7.5"},
-  ];
+  File? _selectedFile; // PDF faylni saqlash uchun o‘zgaruvchi
 
-  void _addPolietilen() {
-    if (_nameController.text.isNotEmpty &&
-        _densityController.text.isNotEmpty &&
-        _meltIndexController.text.isNotEmpty) {
+  // 📂 PDF faylni tanlash funksiyasi
+  Future<void> _pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
       setState(() {
-        polietilenList.add({
-          "Firma": _manufacturerController.text.isEmpty ? "Россия" : _manufacturerController.text,
-          "Name": _nameController.text,
-          "Legacy Name": _legacyNameController.text.isEmpty ? "-" : _legacyNameController.text,
-          "Density": _densityController.text,
-          "Melt Index": _meltIndexController.text,
-        });
+        _selectedFile = File(result.files.single.path!);
       });
 
-      // Konsolga chiqarish (Kelajakda API-ga yuborish mumkin)
-      print("Yangi polietilen qo'shildi: ${polietilenList.last}");
+      print("Tanlangan fayl: ${_selectedFile!.path}");
+    }
+  }
 
-      // Maydonlarni tozalash
+  // 📤 Ma'lumotlarni jo‘natish (PDF bilan birga)
+  void _submitData() {
+    if (_manufacturerController.text.isNotEmpty &&
+        _nameController.text.isNotEmpty &&
+        _densityController.text.isNotEmpty &&
+        _meltIndexController.text.isNotEmpty &&
+        _selectedFile != null) {
+      
+      print("✅ Ishlab chiqaruvchi: ${_manufacturerController.text}");
+      print("✅ Name: ${_nameController.text}");
+      print("✅ Legacy Name: ${_legacyNameController.text}");
+      print("✅ Zichlik: ${_densityController.text}");
+      print("✅ Melt Index: ${_meltIndexController.text}");
+      print("✅ PDF Fayl: ${_selectedFile!.path}");
+
+      // TODO: Bu yerda API-ga yuborish yoki ma'lumotni saqlashni qo‘shish mumkin.
+
+      // 🧹 Maydonlarni tozalash
+      _manufacturerController.clear();
       _nameController.clear();
       _legacyNameController.clear();
       _densityController.clear();
       _meltIndexController.clear();
+      setState(() {
+        _selectedFile = null;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Ma'lumotlar muvaffaqiyatli qo‘shildi!")),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Iltimos, barcha maydonlarni to‘ldiring va PDF yuklang!")),
+      );
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,86 +89,107 @@ class _AdminAddingState extends State<AdminAdding> {
           style: TextStyle(color: AppColors.backgroundColor, fontSize: 20),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              controller: _manufacturerController,
-              decoration: InputDecoration(
-                labelText: "Firma (Россия avtomatik)",
-                border: OutlineInputBorder(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                controller: _manufacturerController,
+                decoration: InputDecoration(
+                  labelText: "Firma nomi",
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            TextField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                labelText: "Polietilen nomi (Name)",
-                border: OutlineInputBorder(),
+                 SizedBox(height: 10),
+              TextField(
+                controller: _manufacturerController,
+                decoration: InputDecoration(
+                  labelText: "Firma davlati",
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            TextField(
-              controller: _legacyNameController,
-              decoration: InputDecoration(
-                labelText: "Legacy Name (majburiy emas)",
-                border: OutlineInputBorder(),
+              SizedBox(height: 10),
+                            TextField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  labelText: "Polietilen turi ",
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            TextField(
-              controller: _densityController,
-              decoration: InputDecoration(
-                labelText: "Zichlik (Density g/cm³)",
-                border: OutlineInputBorder(),
+              SizedBox(height: 10),
+              TextField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  labelText: "Polietilen nomi (Name)",
+                  border: OutlineInputBorder(),
+                ),
               ),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: 10),
-            TextField(
-              controller: _meltIndexController,
-              decoration: InputDecoration(
-                labelText: "Melt Index (g/10 min)",
-                border: OutlineInputBorder(),
+              SizedBox(height: 10),
+
+              TextField(
+                controller: _legacyNameController,
+                decoration: InputDecoration(
+                  labelText: "Legacy Name (majburiy emas)",
+                  border: OutlineInputBorder(),
+                ),
               ),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _addPolietilen,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.grade1,
+              SizedBox(height: 10),
+              TextField(
+                controller: _densityController,
+                decoration: InputDecoration(
+                  labelText: "Zichlik (Density g/cm³)",
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
               ),
-              child: Text(
-                "Qo'shish",
-                style: TextStyle(color: AppColors.backgroundColor),
+              SizedBox(height: 10),
+              TextField(
+                controller: _meltIndexController,
+                decoration: InputDecoration(
+                  labelText: "Melt Index (g/10 min)",
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
               ),
-            ),
-            SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                itemCount: polietilenList.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    child: ListTile(
-                      title: Text(
-                        "${polietilenList[index]['Firma']} - ${polietilenList[index]['Name']}",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(
-                        "Legacy Name: ${polietilenList[index]['Legacy Name']}\n"
-                        "Zichligi: ${polietilenList[index]['Density']} | "
-                        "Melt Index: ${polietilenList[index]['Melt Index']}",
-                      ),
-                    ),
-                  );
-                },
+              SizedBox(height: 20),
+        
+              // 📂 Fayl tanlash tugmasi
+              ElevatedButton.icon(
+                onPressed: _pickFile,
+                icon: Icon(Icons.attach_file),
+                label: Text("PDF yuklash"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.grade1,
+                ),
               ),
-            ),
-          ],
+        
+              // 📌 Tanlangan faylni ko‘rsatish
+              if (_selectedFile != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                    "📄 Fayl: ${_selectedFile!.path.split('/').last}",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                ),
+        
+              SizedBox(height: 20),
+        
+              // 📤 Ma'lumotlarni yuborish tugmasi
+              ElevatedButton(
+                onPressed: _submitData,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.grade1,
+                ),
+                child: Text(
+                  "Ma'lumotni qo'shish",
+                  style: TextStyle(color: AppColors.backgroundColor),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
