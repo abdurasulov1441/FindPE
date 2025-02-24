@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "238929071368",
+    "project_id": "find-pe-92d06",
+    "storage_bucket": "find-pe-92d06.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:238929071368:android:0837702e03fa651c63b0bd",
+        "android_client_info": {
+          "package_name": "uz.find.pe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRmvVgn8-TOZ4ULepMm6I6VWCiKjCu7Rk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

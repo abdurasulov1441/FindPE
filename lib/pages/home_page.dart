@@ -1,14 +1,25 @@
+import 'package:find_pe/app/router.dart';
 import 'package:find_pe/common/style/app_colors.dart';
 import 'package:find_pe/common/style/app_style.dart';
+import 'package:find_pe/pages/admin/admin_page.dart';
 import 'package:find_pe/pages/home_botom_shet.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+  
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      return AdminPage();
+    }
+    
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
@@ -22,9 +33,7 @@ class HomePage extends StatelessWidget {
             fontSize: 20,
           ),
         ),
-        actions: [
-          
-          IconButton(
+        leading: IconButton(
             onPressed: () {
               showPolyethyleneFilter(context);
             },
@@ -34,6 +43,25 @@ class HomePage extends StatelessWidget {
             
               child: SvgPicture.asset(
                 'assets/icons/filter.svg',
+                color: AppColors.grade1,
+                width: 25,
+                height: 25,
+              ),
+            ),
+          ),
+        actions: [
+          
+          IconButton(
+            onPressed: () {
+            context.push(Routes.loginPage);
+            },
+            icon: CircleAvatar(
+              backgroundColor: AppColors.backgroundColor,
+              radius: 18,
+            
+              child: SvgPicture.asset(
+                'assets/icons/user.svg',
+                color: AppColors.grade1,
                 width: 25,
                 height: 25,
               ),

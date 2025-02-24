@@ -21,6 +21,11 @@ dependencies:
   go_router: ^14.8.0
   icons_launcher: ^3.0.0
   flutter_svg: ^2.0.17
+  firebase_core: ^3.12.0
+  firebase_auth: ^5.5.0
+  cloud_firestore: ^5.6.4
+  email_validator: ^3.0.0
+
 
 dev_dependencies:
   flutter_test:

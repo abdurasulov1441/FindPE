@@ -1,4 +1,4 @@
-package com.example.find_pe
+package uz.find.pe
 
 import io.flutter.embedding.android.FlutterActivity
 
