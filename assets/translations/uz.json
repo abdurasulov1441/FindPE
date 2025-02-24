@@ -1,0 +1,64 @@
+{  
+  "sms_title": "SMS orqali kirish",
+  "sms_description": "SMS ga ruxsat beringizni tasdiqlang, shuningdek, bitta marotaba kod avtomatik ravishda kirtilgan kirish maydoniga yuboriladi va siz tezroq dasturga kirishingiz mumkin",
+  "gps_title": "Joylashuvingizga ruxsat bering",
+  "gps_description": "Sizni topish va sizga eng yaqin buyurtmalarni ko'rinishli bo'lishingiz uchun, joylashuvingizga ruxsat bering",
+  "camera_title": "Kameraga ruxsat bering",
+  "camera_description": "Siz avtomobilning rasmini olishingiz, chatda rasmlar yuborish va profil uchun rasmlar olish uchun kameraga ruxsat bering",
+  "microphone_title": "Mikrofonga ruxsat bering",
+  "microphone_description": "Siz videoylar bilan golosli habarlashishingiz uchun mikrofonga ruxsat bering",
+  "notifications_title": "Bildirishlarga ruxsat bering",
+  "notifications_description": "Siz yangi buyurtmalar, habarlar va boshqa muhim hodisalar haqida bildirishlar olishingiz uchun bildirishlarga ruxsat bering",
+  "allow_button": "Ruxsat berish",
+  "skip_button": "O'tkazish",
+
+  "language": "O'zbek",
+  "select_language": "Tilni tanlang",
+  "continue": "Davom etish",
+  "chosen_language": "Tanlangan til:",
+
+  "welcome": "Xush kelibsiz!",
+  "login": "Kirish",
+  "dont_have_account": "Akkauntingiz yo'qmi?",
+  "registration": "Ro'yxatdan o'tish",
+  "have_account": "Akkauntingiz bormi?",
+
+  "enter_pin_code": "Pin kodni kiriting",
+  "confirm_pin_code": "Pin kodni tasdiqlang",
+
+  "phone_verify": "Raqamni tasdiqlash",
+  "enter_sms": "SMS ni kiriting",
+  "we_send_sms": "Biz sizga 6 tali raqam jo‘natdik",
+  "resend_code": "Kodni qaytadan jo'natish",
+
+  "error": "Xatolik yuz berdi!",
+  "error_conection": "Ulanishda xatolik",
+  "verification_succes": "Tasdiqlash muvaffaqiyatli o’tdi.",
+  "error_token": "Xatolik: Tokenlar olinmadi.",
+  "enter_name": "Ismingizni kiriting",
+  "enter_phone": "Telefon raqamni kiriting",
+  "enter_phone_format": "Telefon formatni kiriting",
+  "enter_corectly_phone_format": "To’g’ri formatni kiriting: +998 (XX) XXX XX XX",
+  "phone_number": "Telefon raqam (+998 XXX XXX XX XX)",
+
+  "enter_role": "Rolingizni tanlang",
+  "next": "Keyingisi",
+  "succes_send": "muvaffaqiyatli jo'natildi",
+  "error_locations": "Qayerdan va Qayerga qatnashingiz birxil bo'lmasligi kerak",
+  "enter_data": "Ma'lumotlarni kiriting",
+  "select_car_brand": "Avtomobil brendini tanlang",
+  "select_car_model": "Avtomobil modelini tanlang",
+  "car_number": "Avtomobil raqami",
+  "select_from_location": "Qayerdan qatnashingizni tanlang",
+  "select_to_location": "Qayerga qatnashingizni tanlang",
+  "send": "Jo'natish"
+  
+
+
+
+
+ 
+
+  
+
+}
