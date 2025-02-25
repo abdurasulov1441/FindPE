@@ -34,12 +34,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Map<String, String> localeFlags = {
-      'uz': '🇺🇿', // Узбекский
-      'ru': '🇷🇺', // Русский
-      'en': '🇬🇧', // Английский
-      'zh': '🇨🇳', // Китайский
-      'ar': '🇸🇦', // Арабский
-      'de': '🇩🇪', // Немецкий
+      'uz': '🇺🇿',
+      'ru': '🇷🇺', 
+      'en': '🇬🇧',  
+      'zh': '🇨🇳', 
+      'ar': '🇸🇦', 
+      'de': '🇩🇪', 
     };
   String currentFlag =
         localeFlags[context.locale.languageCode] ?? '🌍'; 
@@ -50,7 +50,7 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'FindPE',
-          style: AppStyle.fontStyle.copyWith(
+          style:TextStyle(
             color: AppColors.backgroundColor,
             fontWeight: FontWeight.bold,
             fontSize: 20,
@@ -116,7 +116,7 @@ class HomePage extends StatelessWidget {
                             backgroundColor: AppColors.grade1,
                             child: Text(
                               data["Turi"]??"",
-                              style: AppStyle.fontStyle.copyWith(
+                              style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -128,14 +128,14 @@ class HomePage extends StatelessWidget {
                             children: [
                               Text(
                                 data["Markirovka"]!,
-                                style: AppStyle.fontStyle.copyWith(
+                                style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
                                 ),
                               ),
                               Text(
                                 "${data["Proizvoditel"]} (${data["Davlat"]})",
-                                style: AppStyle.fontStyle.copyWith(
+                                style: TextStyle(
                                   color: AppColors.uiText,
                                   fontSize: 14,
                                 ),
@@ -150,13 +150,13 @@ class HomePage extends StatelessWidget {
 
                       const SizedBox(height: 12),
 
-                      // 📄 PDF-ni ko‘rish tugmasi
+                     
                       ElevatedButton.icon(
                         onPressed: () {
                           _openPDF(context, data["PDF"]!);
                         },
                         icon: Icon(Icons.picture_as_pdf, color: Colors.white),
-                        label: Text("view_pdf".tr(),style: AppStyle.fontStyle.copyWith(color: AppColors.backgroundColor),),
+                        label: Text("view_pdf".tr(),style: TextStyle(color: AppColors.backgroundColor),),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.grade1,
                           shape: RoundedRectangleBorder(

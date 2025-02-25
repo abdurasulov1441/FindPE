@@ -45,16 +45,26 @@ void showPolyethyleneFilter(BuildContext context) {
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   labelText: "choose_type_polietilen".tr(), // ✅ Исправлено
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.grade1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.grade1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                   border: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.grade1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                items: ["LD", "HD", "LLD"].map((String type) {
-                  return DropdownMenuItem<String>(
-                    value: type,
-                    child: Text(type),
-                  );
-                }).toList(),
+                items:
+                    ["LD", "HD", "LLD"].map((String type) {
+                      return DropdownMenuItem<String>(
+                        value: type,
+                        child: Text(type),
+                      );
+                    }).toList(),
                 onChanged: (value) {
                   selectedType = value;
                 },
@@ -63,19 +73,32 @@ void showPolyethyleneFilter(BuildContext context) {
 
               /// Выбор производителя (исправлено)
               DropdownButtonFormField<String>(
+                
                 decoration: InputDecoration(
-                  labelText: "choose_manufacturer".tr(), // ✅ Исправлено
-                  border: OutlineInputBorder(
+                    focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.grade1),
                     borderRadius: BorderRadius.circular(8),
                   ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.grade1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.grade1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  labelText: "choose_manufacturer".tr(), // ✅ Исправлено
+                  
                 ),
-                items: ["Sibur", "Kazanjorgsintez", "Lukoil", "Borealis"]
-                    .map((String manufacturer) {
-                  return DropdownMenuItem<String>(
-                    value: manufacturer,
-                    child: Text(manufacturer),
-                  );
-                }).toList(),
+                items:
+                    ["Sibur", "Kazanjorgsintez", "Lukoil", "Borealis"].map((
+                      String manufacturer,
+                    ) {
+                      return DropdownMenuItem<String>(
+                        value: manufacturer,
+                        child: Text(manufacturer),
+                      );
+                    }).toList(),
                 onChanged: (value) {
                   selectedManufacturer = value;
                 },
@@ -87,9 +110,20 @@ void showPolyethyleneFilter(BuildContext context) {
                 controller: searchController,
                 decoration: InputDecoration(
                   labelText: "choose_mark_of_polietilen".tr(),
-                  border: OutlineInputBorder(
+                  labelStyle: TextStyle(),
+                    focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.grade1),
                     borderRadius: BorderRadius.circular(8),
                   ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.grade1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.grade1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  
                 ),
               ),
               const SizedBox(height: 16),
@@ -99,7 +133,6 @@ void showPolyethyleneFilter(BuildContext context) {
                 child: ElevatedButton(
                   onPressed: () {
                     String searchQuery = searchController.text.trim();
-                   
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.grade1,
@@ -110,7 +143,7 @@ void showPolyethyleneFilter(BuildContext context) {
                   ),
                   child: Text(
                     "search".tr(),
-                    style: AppStyle.fontStyle.copyWith(
+                    style: TextStyle(
                       fontSize: 16,
                       color: AppColors.backgroundColor,
                       fontWeight: FontWeight.bold,
