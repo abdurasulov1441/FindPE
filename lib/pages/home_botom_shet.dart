@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:find_pe/common/style/app_colors.dart';
 import 'package:find_pe/common/style/app_style.dart';
 import 'package:flutter/material.dart';
@@ -12,25 +13,29 @@ void showPolyethyleneFilter(BuildContext context) {
     ),
     builder: (context) {
       String? selectedType;
-      String? selectedCountry;
+      String? selectedManufacturer; // Исправлено название переменной
       TextEditingController searchController = TextEditingController();
 
       return Padding(
         padding: MediaQuery.of(context).viewInsets,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 16),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(width: 60,height: 10,decoration: BoxDecoration(
-                color: AppColors.grade1,
-                borderRadius: BorderRadius.circular(5),
-              ),),
-              SizedBox(height: 20,),
+              Container(
+                width: 60,
+                height: 10,
+                decoration: BoxDecoration(
+                  color: AppColors.grade1,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              const SizedBox(height: 20),
               Center(
                 child: Text(
-                  "Фильтр полиэтилена",
+                  "polietilen_filtr".tr(), // ✅ Исправлено
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -39,7 +44,7 @@ void showPolyethyleneFilter(BuildContext context) {
               /// Выбор типа полиэтилена
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
-                  labelText: "Выберите тип полиэтилена",
+                  labelText: "choose_type_polietilen".tr(), // ✅ Исправлено
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -56,22 +61,23 @@ void showPolyethyleneFilter(BuildContext context) {
               ),
               const SizedBox(height: 12),
 
-              /// Выбор производителя
+              /// Выбор производителя (исправлено)
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
-                  labelText: "Выберите страну",
+                  labelText: "choose_manufacturer".tr(), // ✅ Исправлено
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                items: ["Russia", "China", "Germany", "USA"].map((String country) {
+                items: ["Sibur", "Kazanjorgsintez", "Lukoil", "Borealis"]
+                    .map((String manufacturer) {
                   return DropdownMenuItem<String>(
-                    value: country,
-                    child: Text(country),
+                    value: manufacturer,
+                    child: Text(manufacturer),
                   );
                 }).toList(),
                 onChanged: (value) {
-                  selectedCountry = value;
+                  selectedManufacturer = value;
                 },
               ),
               const SizedBox(height: 12),
@@ -80,7 +86,7 @@ void showPolyethyleneFilter(BuildContext context) {
               TextField(
                 controller: searchController,
                 decoration: InputDecoration(
-                  labelText: "Введите марку полиэтилена",
+                  labelText: "choose_mark_of_polietilen".tr(),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -93,11 +99,7 @@ void showPolyethyleneFilter(BuildContext context) {
                 child: ElevatedButton(
                   onPressed: () {
                     String searchQuery = searchController.text.trim();
-                    if (searchQuery.isNotEmpty) {
-                     
-                      Navigator.pop(context); 
-                      showResults(context, searchQuery, selectedType, selectedCountry);
-                    }
+                   
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.grade1,
@@ -106,56 +108,18 @@ void showPolyethyleneFilter(BuildContext context) {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child:  Text("Найти", style: AppStyle.fontStyle.copyWith(fontSize: 16,color: AppColors.backgroundColor,fontWeight: FontWeight.bold)),
+                  child: Text(
+                    "search".tr(),
+                    style: AppStyle.fontStyle.copyWith(
+                      fontSize: 16,
+                      color: AppColors.backgroundColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
-        ),
-      );
-    },
-  );
-}
-
-/// **Функция для отображения результатов поиска**
-void showResults(BuildContext context, String query, String? type, String? country) {
-  // Здесь можно подгружать данные с допуском ±3 (Density, Melt Index) из базы
-  List<Map<String, dynamic>> results = [
-    {"name": "LD 03210 FE", "density": 0.921, "melt": 0.3, "file": "TDS PE LD03210 FE_RUS.pdf"},
-    {"name": "LD 04200 FE", "density": 0.922, "melt": 4.0, "file": "TDS LD04200 FE_RUS.pdf"},
-  ];
-
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-    ),
-    builder: (context) {
-      return Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            /// Заголовок результатов
-            Text(
-              "Результаты поиска",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-
-            /// Список найденных марок
-            ...results.map((item) => ListTile(
-                  title: Text(item["name"], style: TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text("Density: ${item["density"]} | Melt index: ${item["melt"]}"),
-                  trailing: IconButton(
-                    icon: Icon(Icons.picture_as_pdf, color: Colors.red),
-                    onPressed: () {
-                      // Открытие PDF-файла
-                    },
-                  ),
-                )),
-          ],
         ),
       );
     },

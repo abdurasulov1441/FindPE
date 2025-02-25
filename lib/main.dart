@@ -4,16 +4,27 @@ import 'package:find_pe/common/db/cache.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 void main() async {
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+    
+  const AndroidInitializationSettings androidInitSettings =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
 
+  const InitializationSettings initializationSettings =
+      InitializationSettings(android: androidInitSettings);
+      
   WidgetsFlutterBinding.ensureInitialized();
   await cache.init();
+
   try {
     await Firebase.initializeApp();
   } catch (e) {
     print("Firebase yuklashda xatolik: $e");
   }
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -26,12 +37,14 @@ void main() async {
   runApp(
     EasyLocalization(
       path: 'assets/translations',
-      supportedLocales: const [
-        Locale('uz'),
-        Locale('ru'),
-        Locale('uk'),
+     supportedLocales: const [
+        Locale('ru'), // Русский
+        Locale('en'), // Английский
+        Locale('zh'), // Китайский (упрощённый)
+        Locale('ar'), // Арабский
+        Locale('de'), // Немецкий
       ],
-      startLocale: const Locale('uz'),
+      startLocale: const Locale('ru'),
       child:  App(),
       ),
     

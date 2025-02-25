@@ -1,0 +1,13 @@
+{  
+   "select_language": "Select Language",
+   "density": "Density",
+   "melt_index": "Melt Index",
+   "view_pdf": "View PDF",
+   "polietilen_filtr": "Polyethylene Filter",
+   "choose_type_polietilen": "Choose the type of polyethylene",
+   "choose_manufacturer": "Choose the manufacturer",
+   "choose_mark_of_polietilen": "Choose the brand of polyethylene",
+   "search": "Search",
+   "reset": "Reset"
+
+}

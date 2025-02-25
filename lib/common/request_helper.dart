@@ -9,8 +9,8 @@
 
 // final class RequestHelper {
 //   final logger = Logger();
-//   // final baseUrl = 'http://10.100.26.2:5050';
-//   final baseUrl = 'https://paygo.app-center.uz';
+//   final baseUrl = 'http://10.100.26.3:4000';
+//   // final baseUrl = 'https://paygo.app-center.uz';
 //   final dio = Dio();
 
 //   void logMethod(String message) {
@@ -126,7 +126,7 @@
 //               return retryResponse.data;
 //             } else {
 //               print("Ошибка: Новый accessToken отсутствует.");
-//               router.go(Routes.loginScreen); // Переход на экран логина
+//               router.go(Routes.loginPage); // Переход на экран логина
 //               throw UnauthenticatedError();
 //             }
 //           } catch (refreshError) {
@@ -136,12 +136,12 @@
 //               print("Ответ сервера: ${refreshError.response?.data}");
 //             }
 
-//             router.go(Routes.loginScreen); // Переход на экран логина
+//             router.go(Routes.loginPage); // Переход на экран логина
 //             throw UnauthenticatedError();
 //           }
 //         } else {
 //           print("Refresh Token отсутствует в кеше.");
-//           router.go(Routes.loginScreen); // Переход на экран логина
+//           router.go(Routes.loginPage); // Переход на экран логина
 //           throw UnauthenticatedError();
 //         }
 //       } else {
@@ -199,9 +199,9 @@
 //       }
 
 //       if (e.response?.statusCode == 401 || e.response?.statusCode == 403) {
-//         router.go(Routes.roleSelect);
+//         router.go(Routes.loginPage);
 //         if (path == "/services/platon-core/api/mobile/v1/auth/legal/register") {
-//           router.go(Routes.loginScreen);
+//           router.go(Routes.loginPage);
 //           throw Unauthenticated();
 //         }
 //         throw UnauthenticatedError();
@@ -264,7 +264,7 @@
 //       ]);
 
 //       if (e.response?.statusCode == 401 || e.response?.statusCode == 403) {
-//         router.go(Routes.loginScreen);
+//         router.go(Routes.loginPage);
 //         throw UnauthenticatedError();
 //       }
 
@@ -340,7 +340,7 @@
 //       'Accept': 'application/json',
 //       'Authorization': 'Bearer $token',
 //       'lang': 'uz',
-//       // 'Authorization': 'Basic OTk4OTAwOTYxNzA0OjEyMzQ1Njc4OQ==',
+
 //     };
 
 //     try {
@@ -378,7 +378,7 @@
 //       ]);
 
 //       if (e.response?.statusCode == 401 || e.response?.statusCode == 403) {
-//         router.go(Routes.loginScreen);
+//         router.go(Routes.loginPage);
 //         throw UnauthenticatedError();
 //       }
 
@@ -469,7 +469,7 @@
 //       ]);
 
 //       if (e.response?.statusCode == 401 || e.response?.statusCode == 403) {
-//         router.go(Routes.loginScreen);
+//         router.go(Routes.loginPage);
 //         throw UnauthenticatedError();
 //       }
 
