@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:find_pe/common/style/app_colors.dart';
-import 'package:find_pe/common/style/app_style.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 void showPolyethyleneFilter(BuildContext context) {
   showModalBottomSheet(
@@ -12,8 +12,6 @@ void showPolyethyleneFilter(BuildContext context) {
       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
     ),
     builder: (context) {
-      String? selectedType;
-      String? selectedManufacturer; // Исправлено название переменной
       TextEditingController searchController = TextEditingController();
 
       return Padding(
@@ -66,7 +64,6 @@ void showPolyethyleneFilter(BuildContext context) {
                       );
                     }).toList(),
                 onChanged: (value) {
-                  selectedType = value;
                 },
               ),
               const SizedBox(height: 12),
@@ -100,7 +97,6 @@ void showPolyethyleneFilter(BuildContext context) {
                       );
                     }).toList(),
                 onChanged: (value) {
-                  selectedManufacturer = value;
                 },
               ),
               const SizedBox(height: 12),
@@ -132,7 +128,8 @@ void showPolyethyleneFilter(BuildContext context) {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    String searchQuery = searchController.text.trim();
+                    searchController.text.trim();
+                    context.pop();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.grade1,

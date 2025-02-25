@@ -41,6 +41,7 @@ class HomePage extends StatelessWidget {
       'ar': '🇸🇦', 
       'de': '🇩🇪', 
     };
+    
   String currentFlag =
         localeFlags[context.locale.languageCode] ?? '🌍'; 
     return Scaffold(
