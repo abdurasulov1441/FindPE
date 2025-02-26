@@ -1,42 +1,68 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
-    id("com.google.gms.google-services") // Google Services для Firebase
+    id("com.google.gms.google-services")
     id("kotlin-android")
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+val keystorePropertiesFile = rootProject.file("key.properties")
+val keystoreProperties = Properties()
+
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
+
 android {
     namespace = "uz.find.pe"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 34
 
-    ndkVersion = "27.0.12077973" // Если 27.0.12077973 не работает, используй эту
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true // ✅ Включаем coreLibraryDesugaring
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = "11"
     }
 
     defaultConfig {
         applicationId = "uz.find.pe"
         minSdk = 23
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
 
-        // ✅ Добавляем поддержку разных архитектур
         ndk {
-            abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
+            abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+        }
+    }
+
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties["keyAlias"] as String?
+            keyPassword = keystoreProperties["keyPassword"] as String?
+            storeFile = keystoreProperties["storeFile"]?.let { file(it as String) }
+            storePassword = keystoreProperties["storePassword"] as String?
         }
     }
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("debug")
+            isMinifyEnabled = true  // ✅ Включаем minifyEnabled
+            isShrinkResources = true  // ✅ Оставляем сжатие ресурсов
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("release")
+        }
+
+        debug {
+            isMinifyEnabled = false
+            isShrinkResources = false
         }
     }
 
@@ -52,7 +78,6 @@ flutter {
 }
 
 dependencies {
-    // ✅ Правильный способ добавления coreLibraryDesugaring
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 
     implementation("androidx.core:core-ktx:1.9.0")

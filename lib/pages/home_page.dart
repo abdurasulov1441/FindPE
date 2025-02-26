@@ -4,7 +4,6 @@ import 'package:find_pe/pages/home_botom_shet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:find_pe/common/style/app_colors.dart';
-import 'package:find_pe/common/style/app_style.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
