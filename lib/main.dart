@@ -38,11 +38,11 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     EasyLocalization(
       path: 'assets/translations',
      supportedLocales: const [
-        Locale('ru'), // Русский
-        Locale('en'), // Английский
-        Locale('zh'), // Китайский (упрощённый)
-        Locale('ar'), // Арабский
-        Locale('de'), // Немецкий
+        Locale('ru'), 
+        Locale('en'), 
+        Locale('zh'), 
+        Locale('ar'),
+        Locale('de'),
       ],
       startLocale: const Locale('ru'),
       child:  App(),
