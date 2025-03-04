@@ -8,6 +8,7 @@
    "choose_manufacturer": "Wählen Sie den Hersteller",
    "choose_mark_of_polietilen": "Wählen Sie die Marke des Polyethylens",
    "search": "Suche",
-   "reset": "Zurücksetzen"
+   "reset": "Zurücksetzen",
+   "reset_filter": "Filter zurücksetzen"
    
 }

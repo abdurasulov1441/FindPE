@@ -8,7 +8,8 @@
   "choose_manufacturer": "Выберите производителя",
   "choose_mark_of_polietilen": "Выберите марку полиэтилена",
   "search": "Поиск",
-  "reset": "Сбросить"
+  "reset": "Сбросить",
+  "reset_filter": "Сбросить фильтр"
  
   
 }

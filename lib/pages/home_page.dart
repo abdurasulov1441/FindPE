@@ -2,11 +2,11 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:find_pe/common/language/language_select_page.dart';
 import 'package:find_pe/common/request_helper.dart';
-import 'package:find_pe/pages/home_botom_shet.dart';
 import 'package:find_pe/pages/pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:find_pe/common/style/app_colors.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
@@ -21,13 +21,84 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    getData();
+    getProductTypes();
+    getOrganizations();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getData(
+        search: selectedSearch,
+        countryId: selectedCountryId,
+        organizationId: selectedOrganizationId,
+        typeId: selectedTypeId,
+      );
+    });
   }
 
-  List<Map<String, dynamic>> items = [];
+  String? selectedSearch;
+  String? selectedCountryId;
+  String? selectedOrganizationId;
+  String? selectedTypeId;
 
-  Future<void> getData() async {
-    final response = await requestHelper.get('/api/public/products', log: true);
+  List<Map<String, dynamic>> items = [];
+  List<Map<String, dynamic>> product_types = [];
+  List<Map<String, dynamic>> organizations = [];
+
+  Future<void> getProductTypes() async {
+    final response = await requestHelper.get(
+      '/api/public/product-types',
+      log: true,
+    );
+
+    if (response['success'] == true) {
+      setState(() {
+        product_types = List<Map<String, dynamic>>.from(response['data']);
+      });
+      for (var productType in product_types) {
+        print(productType['name']);
+      }
+    }
+  }
+
+  Future<void> getOrganizations() async {
+    final response = await requestHelper.get(
+      '/api/public/organizations',
+      log: true,
+    );
+
+    if (response['success'] == true) {
+      setState(() {
+        organizations = List<Map<String, dynamic>>.from(response['data']);
+      });
+      for (var organization in organizations) {
+        print(organization['name']);
+      }
+    }
+  }
+
+  Future<void> getData({
+    String? search,
+    String? countryId,
+    String? organizationId,
+    String? typeId,
+  }) async {
+    // Формируем URL с параметрами фильтрации
+    String url = "/api/public/products";
+
+    Map<String, String> queryParams = {};
+    if (search != null && search.isNotEmpty) queryParams["search"] = search;
+    if (countryId != null && countryId.isNotEmpty)
+      queryParams["country_id"] = countryId;
+    if (organizationId != null && organizationId.isNotEmpty)
+      queryParams["organization_id"] = organizationId;
+    if (typeId != null && typeId.isNotEmpty) queryParams["type_id"] = typeId;
+
+    if (queryParams.isNotEmpty) {
+      url += "?" + Uri(queryParameters: queryParams).query;
+    }
+
+    debugPrint("📡 Запрос: $url"); // Проверяем корректность URL
+
+    final response = await requestHelper.get(url, log: true);
 
     if (response['success'] == true) {
       setState(() {
@@ -248,5 +319,193 @@ class _HomePageState extends State<HomePage> {
     final file = File("${directory.path}/downloaded.pdf");
     await file.writeAsBytes(response.bodyBytes);
     return file;
+  }
+
+  void showPolyethyleneFilter(BuildContext context) {
+    TextEditingController searchController = TextEditingController(
+      text: selectedSearch ?? "",
+    );
+
+    showModalBottomSheet(
+      backgroundColor: AppColors.backgroundColor,
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Padding(
+              padding: MediaQuery.of(context).viewInsets,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 16,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 60,
+                      height: 10,
+                      decoration: BoxDecoration(
+                        color: AppColors.grade1,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Center(
+                      child: Text(
+                        "polietilen_filtr".tr(),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    DropdownButtonFormField<String>(
+                      value: selectedTypeId,
+                      decoration: _inputDecoration(
+                        "choose_type_polietilen".tr(),
+                      ),
+                      items:
+                          product_types.map((type) {
+                            return DropdownMenuItem<String>(
+                              value: type["id"].toString(),
+                              child: Text(type["name"]),
+                            );
+                          }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedTypeId = value;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 12),
+
+                    // Выбор производителя
+                    DropdownButtonFormField<String>(
+                      value: selectedOrganizationId,
+                      decoration: _inputDecoration("choose_manufacturer".tr()),
+                      items:
+                          organizations.map((org) {
+                            return DropdownMenuItem<String>(
+                              value: org["id"].toString(),
+                              child: Text(org["name"]),
+                            );
+                          }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedOrganizationId = value;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 12),
+
+                    TextField(
+                      controller: searchController,
+                      decoration: _inputDecoration(
+                        "choose_mark_of_polietilen".tr(),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                selectedSearch = null;
+                                selectedCountryId = null;
+                                selectedOrganizationId = null;
+                                selectedTypeId = null;
+                                searchController.clear();
+                              });
+                          
+                             
+                              getData();
+                              context.pop();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey,
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: Text(
+                              "reset_filter".tr(),
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+SizedBox(height: 10 ,),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          selectedSearch = searchController.text.trim();
+                          getData(
+                            search: selectedSearch,
+                            countryId: selectedCountryId,
+                            organizationId: selectedOrganizationId,
+                            typeId: selectedTypeId,
+                          );
+                          context.pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.grade1,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: Text(
+                          "search".tr(),
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: AppColors.backgroundColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  // Вспомогательная функция для оформления полей ввода
+  InputDecoration _inputDecoration(String labelText) {
+    return InputDecoration(
+      labelText: labelText,
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.grade1),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.grade1),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.grade1),
+        borderRadius: BorderRadius.circular(8),
+      ),
+    );
   }
 }
