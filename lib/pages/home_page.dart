@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:find_pe/common/language/language_select_page.dart';
 import 'package:find_pe/common/request_helper.dart';
@@ -166,27 +165,29 @@ class _HomePageState extends State<HomePage> {
                       ),
 
                       const SizedBox(height: 12),
-
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          _openPDF(context, data["pdf_file"] ?? "Noma'lum");
-                        },
-                        icon: Icon(Icons.picture_as_pdf, color: Colors.white),
-                        label: Text(
-                          "view_pdf".tr(),
-                          style: TextStyle(color: AppColors.backgroundColor),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.grade1,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                      if (data["pdf_file"] != null)
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            _openPDF(context, data["pdf_file"] ?? "Noma'lum");
+                          },
+                          icon: Icon(Icons.picture_as_pdf, color: Colors.white),
+                          label: Text(
+                            "view_pdf".tr(),
+                            style: TextStyle(color: AppColors.backgroundColor),
                           ),
-                          padding: EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 16,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.grade1,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              vertical: 10,
+                              horizontal: 16,
+                            ),
                           ),
-                        ),
-                      ),
+                        )
+                      else
+                        SizedBox(),
                     ],
                   ),
                 );
@@ -197,7 +198,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
 
   Widget _buildRow(String icon, String label, String value) {
     return Padding(
@@ -218,35 +218,35 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _openPDF(BuildContext context, String filePath) async {
-  String pdfUrl = "http://95.130.227.93:8090/api/$filePath";
-  debugPrint("📄 PDF yuklanmoqda: $pdfUrl");
+    String pdfUrl = "http://95.130.227.93:8090/api/$filePath";
+    debugPrint("📄 PDF yuklanmoqda: $pdfUrl");
 
-  try {
-
-    final File file = await _downloadPDF(pdfUrl);
-    if (file.existsSync()) {
-      Navigator.push(
+    try {
+      final File file = await _downloadPDF(pdfUrl);
+      if (file.existsSync()) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PDFViewerScreen(pdfFile: file),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("❌ PDF yuklab bo‘lmadi!")));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
         context,
-        MaterialPageRoute(builder: (context) => PDFViewerScreen(pdfFile: file)),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("❌ PDF yuklab bo‘lmadi!")),
-      );
+      ).showSnackBar(SnackBar(content: Text("❌ PDF ochishda xatolik: $e")));
     }
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("❌ PDF ochishda xatolik: $e")),
-    );
   }
-}
 
-
-Future<File> _downloadPDF(String url) async {
-  final response = await http.get(Uri.parse(url));
-  final directory = await getApplicationDocumentsDirectory();
-  final file = File("${directory.path}/downloaded.pdf");
-  await file.writeAsBytes(response.bodyBytes);
-  return file;
-}
+  Future<File> _downloadPDF(String url) async {
+    final response = await http.get(Uri.parse(url));
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File("${directory.path}/downloaded.pdf");
+    await file.writeAsBytes(response.bodyBytes);
+    return file;
+  }
 }

@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:find_pe/common/style/app_colors.dart';
+import 'package:find_pe/common/style/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:go_router/go_router.dart';
 
 
 class PDFViewerScreen extends StatelessWidget {
@@ -11,7 +14,14 @@ class PDFViewerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("PDF Viewer")),
+      backgroundColor: AppColors.backgroundColor,
+      appBar: AppBar(
+        centerTitle: true,
+        leading: IconButton(onPressed: (){
+          context.pop();
+        }, icon: Icon(Icons.arrow_back,color: AppColors.backgroundColor,)),
+        backgroundColor: AppColors.grade1,
+        title: Text("PDF hujjat",style: AppStyle.fontStyle.copyWith(color: AppColors.backgroundColor,fontSize: 20),)),
       body: PDFView(
         filePath: pdfFile.path,
         enableSwipe: true,

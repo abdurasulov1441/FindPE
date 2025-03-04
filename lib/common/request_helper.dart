@@ -31,8 +31,14 @@ final class RequestHelper {
     CancelToken? cancelToken,
   }) async {
     final response = await dio.get(
+     
       baseUrl + path,
       cancelToken: cancelToken,
+       options: Options(
+          headers: {
+            'x-internal-api-key': 'ds1fbs3543wefnsd6546nfgs2djkgi178687sdfg', 
+          },
+        ),
     );
 
     if (log) {
@@ -42,6 +48,7 @@ final class RequestHelper {
         response.statusCode,
         response.statusMessage,
         response.data,
+        response.headers,
       ]);
 
       logMethod(jsonEncode(response.data));
