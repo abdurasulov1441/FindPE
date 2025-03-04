@@ -9,8 +9,8 @@ import 'package:find_pe/app/router.dart';
 
 final class RequestHelper {
   final logger = Logger();
-  final baseUrl = 'http://10.100.26.3:4000';
-  // final baseUrl = 'http://95.130.227.93:8090/';
+  // final baseUrl = 'http://10.100.26.3:4000';
+   final baseUrl = 'http://95.130.227.93:8090';
   final dio = Dio();
 
   void logMethod(String message) {

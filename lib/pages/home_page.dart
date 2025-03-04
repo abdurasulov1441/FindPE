@@ -1,48 +1,54 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:find_pe/common/language/language_select_page.dart';
+import 'package:find_pe/common/request_helper.dart';
 import 'package:find_pe/pages/home_botom_shet.dart';
+import 'package:find_pe/pages/pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:find_pe/common/style/app_colors.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
 
-  final List<Map<String, String>> items = const [
-    {
-      "Turi": "HDPE",
-      "Markirovka": "15803-020",
-      "Proizvoditel": "Сибур",
-      "Davlat": "Россия",
-      "Zichlik": "0,920 g/cm³",
-      "Melt Index": "2,0 g/10 min",
-      "PDF": "example1.pdf"
-    },
-    {
-      "Turi": "LDPE",
-      "Markirovka": "15303-003",
-      "Proizvoditel": "Казаньоргсинтез",
-      "Davlat": "Россия",
-      "Zichlik": "0,920 g/cm³",
-      "Melt Index": "0,3 g/10 min",
-      "PDF": "example2.pdf"
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  List<Map<String, dynamic>> items = [];
+
+  Future<void> getData() async {
+    final response = await requestHelper.get('/api/public/products', log: true);
+
+    if (response['success'] == true) {
+      setState(() {
+        items = List<Map<String, dynamic>>.from(response['data']);
+      });
     }
-  ];
+  }
 
   @override
   Widget build(BuildContext context) {
     final Map<String, String> localeFlags = {
       'uz': '🇺🇿',
-      'ru': '🇷🇺', 
-      'en': '🇬🇧',  
-      'zh': '🇨🇳', 
-      'ar': '🇸🇦', 
-      'de': '🇩🇪', 
+      'ru': '🇷🇺',
+      'en': '🇬🇧',
+      'zh': '🇨🇳',
+      'ar': '🇸🇦',
+      'de': '🇩🇪',
     };
-    
-  String currentFlag =
-        localeFlags[context.locale.languageCode] ?? '🌍'; 
+
+    String currentFlag = localeFlags[context.locale.languageCode] ?? '🌍';
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
@@ -50,39 +56,39 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'FindPE',
-          style:TextStyle(
+          style: TextStyle(
             color: AppColors.backgroundColor,
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
         ),
         leading: IconButton(
-            onPressed: () {
-              showPolyethyleneFilter(context);
-            },
-            icon: CircleAvatar(
-              backgroundColor: AppColors.backgroundColor,
-              radius: 18,
-            
-              child: SvgPicture.asset(
-                'assets/icons/filter.svg',
-                color: AppColors.grade1,
-                width: 25,
-                height: 25,
-              ),
+          onPressed: () {
+            showPolyethyleneFilter(context);
+          },
+          icon: CircleAvatar(
+            backgroundColor: AppColors.backgroundColor,
+            radius: 18,
+
+            child: SvgPicture.asset(
+              'assets/icons/filter.svg',
+              color: AppColors.grade1,
+              width: 25,
+              height: 25,
             ),
           ),
-  actions: [GestureDetector(
-                      onTap: () => showLanguageBottomSheet(context),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 20,
-                        child: Text(
-                          currentFlag,
-                          style: const TextStyle(fontSize: 24),
-                        ),
-                      ),
-                    ),],
+        ),
+        actions: [
+          GestureDetector(
+            onTap: () => showLanguageBottomSheet(context),
+            child: CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: 20,
+              child: Text(currentFlag, style: const TextStyle(fontSize: 24)),
+            ),
+          ),
+          SizedBox(width: 10),
+        ],
       ),
       body: Column(
         children: [
@@ -93,7 +99,10 @@ class HomePage extends StatelessWidget {
                 final data = items[index];
 
                 return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -115,7 +124,7 @@ class HomePage extends StatelessWidget {
                             radius: 24,
                             backgroundColor: AppColors.grade1,
                             child: Text(
-                              data["Turi"]??"",
+                              data["product_types"]?["name"] ?? "",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -127,14 +136,14 @@ class HomePage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                data["Markirovka"]!,
+                                data["name"] ?? "",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
                                 ),
                               ),
                               Text(
-                                "${data["Proizvoditel"]} (${data["Davlat"]})",
+                                "${data["organizations"]?["name"] ?? "Noma'lum"} (${data["countries"]?["name"] ?? "Noma'lum"})",
                                 style: TextStyle(
                                   color: AppColors.uiText,
                                   fontSize: 14,
@@ -145,24 +154,37 @@ class HomePage extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      _buildRow("⚖️","density", data["Zichlik"]!),
-                      _buildRow("🔥", "melt_index",data["Melt Index"]!),
+                      _buildRow(
+                        "⚖️",
+                        "density",
+                        data["density"]?.toString() ?? "Noma'lum",
+                      ),
+                      _buildRow(
+                        "🔥",
+                        "melt_index",
+                        data["melt_index"]?.toString() ?? "Noma'lum",
+                      ),
 
                       const SizedBox(height: 12),
 
-                     
                       ElevatedButton.icon(
                         onPressed: () {
-                          _openPDF(context, data["PDF"]!);
+                          _openPDF(context, data["pdf_file"] ?? "Noma'lum");
                         },
                         icon: Icon(Icons.picture_as_pdf, color: Colors.white),
-                        label: Text("view_pdf".tr(),style: TextStyle(color: AppColors.backgroundColor),),
+                        label: Text(
+                          "view_pdf".tr(),
+                          style: TextStyle(color: AppColors.backgroundColor),
+                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.grade1,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                          padding: EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 16,
+                          ),
                         ),
                       ),
                     ],
@@ -176,8 +198,8 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // 🏷 Har bir elementni chiroyli chiqarish uchun yordamchi funksiya
-  Widget _buildRow(String icon,String label, String value) {
+
+  Widget _buildRow(String icon, String label, String value) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
       child: Row(
@@ -189,23 +211,42 @@ class HomePage extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),
           const SizedBox(width: 5),
-          Text(
-            value,
-            style: TextStyle(color: Colors.black87, fontSize: 14),
-          ),
+          Text(value, style: TextStyle(color: Colors.black87, fontSize: 14)),
         ],
       ),
     );
   }
 
-  // 📂 PDF-ni ochish funksiyasi
-  void _openPDF(BuildContext context, String fileName) {
+  void _openPDF(BuildContext context, String filePath) async {
+  String pdfUrl = "http://95.130.227.93:8090/api/$filePath";
+  debugPrint("📄 PDF yuklanmoqda: $pdfUrl");
+
+  try {
+
+    final File file = await _downloadPDF(pdfUrl);
+    if (file.existsSync()) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => PDFViewerScreen(pdfFile: file)),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("❌ PDF yuklab bo‘lmadi!")),
+      );
+    }
+  } catch (e) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text("📄 $fileName ochilmoqda..."),
-        duration: Duration(seconds: 2),
-      ),
+      SnackBar(content: Text("❌ PDF ochishda xatolik: $e")),
     );
-    // TODO: PDF ochish uchun implementatsiya qo‘shish
   }
+}
+
+
+Future<File> _downloadPDF(String url) async {
+  final response = await http.get(Uri.parse(url));
+  final directory = await getApplicationDocumentsDirectory();
+  final file = File("${directory.path}/downloaded.pdf");
+  await file.writeAsBytes(response.bodyBytes);
+  return file;
+}
 }

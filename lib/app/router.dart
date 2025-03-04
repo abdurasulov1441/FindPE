@@ -1,3 +1,4 @@
+import 'package:find_pe/home_riverprod.dart';
 import 'package:find_pe/pages/home_page.dart';
 import 'package:go_router/go_router.dart';
 
