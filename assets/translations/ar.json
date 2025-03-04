@@ -3,12 +3,14 @@
    "density": "الكثافة",
    "melt_index": "مؤشر الانصهار",
    "view_pdf": "عرض PDF",
-   "polietilen_filtr": "فلتر البولي إثيلين",
+   "polietilen_filtr": "البحث عن البولي إثيلين",
    "choose_type_polietilen": "اختر نوع البولي إثيلين",
    "choose_manufacturer": "اختر الشركة المصنعة",
    "choose_mark_of_polietilen": "اختر علامة البولي إثيلين",
    "search": "بحث",
    "reset": "إعادة تعيين",
-   "reset_filter": "إعادة تعيين الفلتر"
+   "reset_filter": "إعادة تعيين الفلتر",
+   "search_results": "نتائج البحث",
+   "no_results": "لا توجد نتائج"
 
 }

@@ -3,12 +3,14 @@
    "density": "Dichte",
    "melt_index": "Schmelzindex",
    "view_pdf": "PDF anzeigen",
-   "polietilen_filtr": "Polyethylenfilter",
+   "polietilen_filtr": "Suche nach Polyethylen",
    "choose_type_polietilen": "Wählen Sie den Typ des Polyethylens",
    "choose_manufacturer": "Wählen Sie den Hersteller",
    "choose_mark_of_polietilen": "Wählen Sie die Marke des Polyethylens",
    "search": "Suche",
    "reset": "Zurücksetzen",
-   "reset_filter": "Filter zurücksetzen"
+   "reset_filter": "Filter zurücksetzen",
+   "search_results": "Suchergebnisse",
+   "no_results": "Keine Ergebnisse"
    
 }

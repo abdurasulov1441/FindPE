@@ -3,13 +3,15 @@
   "density": "Плотность",
   "melt_index": "Индекс плавления",
   "view_pdf": "Просмотреть PDF",
-  "polietilen_filtr": "Полиэтиленовый фильтр",
+  "polietilen_filtr": "Поиск полиэтилена",
   "choose_type_polietilen": "Выберите тип полиэтилена",
   "choose_manufacturer": "Выберите производителя",
   "choose_mark_of_polietilen": "Выберите марку полиэтилена",
   "search": "Поиск",
   "reset": "Сбросить",
-  "reset_filter": "Сбросить фильтр"
+  "reset_filter": "Сбросить фильтр",
+  "search_results": "Результаты поиска",
+  "no_results": "Нет результатов"
  
   
 }
