@@ -10,7 +10,6 @@ import 'package:find_pe/pages/pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import 'package:lottie/lottie.dart';
 import 'package:path_provider/path_provider.dart';
 
 class MyWidget extends StatefulWidget {
