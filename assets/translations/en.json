@@ -11,6 +11,7 @@
    "reset": "Reset",
    "reset_filter": "Reset Filter",
    "search_results": "Search Results",
-   "no_results": "No results"
+   "no_results": "No results",
+   "all": "All"
 
 }

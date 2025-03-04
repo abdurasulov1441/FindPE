@@ -66,8 +66,7 @@ class _MyWidgetState extends State<MyWidget> {
     debugPrint("📡 Запрос: $url");
 
     final response = await requestHelper.get(url, log: true);
-    // delay for 2 seconds
-    await Future.delayed(Duration(seconds: 2));
+   
 
     if (response['success'] == true) {
       setState(() {

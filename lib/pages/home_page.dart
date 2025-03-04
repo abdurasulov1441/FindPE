@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:find_pe/common/language/language_select_page.dart';
 import 'package:find_pe/common/request_helper.dart';
+import 'package:find_pe/common/style/app_style.dart';
 import 'package:find_pe/pages/search_results.dart';
 import 'package:flutter/material.dart';
 import 'package:find_pe/common/style/app_colors.dart';
@@ -181,13 +182,13 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 16),
 
               DropdownButtonFormField<String>(
-                value: selectedTypeId, // Используется selectedTypeId
+                value: selectedTypeId,
                 decoration: _inputDecoration("choose_type_polietilen".tr()),
                 items: [
                   DropdownMenuItem(
                     value: null,
-                    child: Text("Все"),
-                  ), // Добавляем "Все"
+                    child: Text("all".tr(),style: AppStyle.fontStyle,),
+                  ),
                   ...product_types.map((type) {
                     return DropdownMenuItem<String>(
                       value: type["id"].toString(),
@@ -210,8 +211,8 @@ class _HomePageState extends State<HomePage> {
                 items: [
                   DropdownMenuItem(
                     value: null,
-                    child: Text("Все"),
-                  ), // Добавляем "Все"
+                    child: Text("all".tr(),style: AppStyle.fontStyle,),
+                  ),
                   ...organizations.map((org) {
                     return DropdownMenuItem<String>(
                       value: org["id"].toString(),
@@ -238,12 +239,13 @@ class _HomePageState extends State<HomePage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
+                    String formattedSearch = searchController.text.trim().replaceAll(" ", ""); 
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder:
                             (context) => MyWidget(
-                              search: searchController.text.trim(),
+                              search: formattedSearch,
                               typeId: selectedTypeId,
                               organizationId: selectedOrganizationId,
                             ),
