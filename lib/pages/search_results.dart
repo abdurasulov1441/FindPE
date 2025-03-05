@@ -139,11 +139,12 @@ class _MyWidgetState extends State<MyWidget> {
                               Row(
                                 children: [
                                   CircleAvatar(
-                                    radius: 24,
+                                    radius: 30,
                                     backgroundColor: AppColors.grade1,
                                     child: Text(
                                       data["product_types"]?["name"] ?? "",
                                       style: TextStyle(
+                                        fontSize: 14,
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                       ),

@@ -21,7 +21,7 @@ class PDFViewerScreen extends StatelessWidget {
           context.pop();
         }, icon: Icon(Icons.arrow_back,color: AppColors.backgroundColor,)),
         backgroundColor: AppColors.grade1,
-        title: Text("PDF hujjat",style: AppStyle.fontStyle.copyWith(color: AppColors.backgroundColor,fontSize: 20),)),
+        title: Text("PDF",style: AppStyle.fontStyle.copyWith(color: AppColors.backgroundColor,fontSize: 20),)),
       body: PDFView(
         filePath: pdfFile.path,
         enableSwipe: true,
