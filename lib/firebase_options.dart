@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCRmvVgn8-TOZ4ULepMm6I6VWCiKjCu7Rk',
-    appId: '1:238929071368:android:0837702e03fa651c63b0bd',
-    messagingSenderId: '238929071368',
-    projectId: 'find-pe-92d06',
-    storageBucket: 'find-pe-92d06.firebasestorage.app',
+    apiKey: 'AIzaSyCCQdOKbDCbZyRQY2AitUc1mRweATlP7iU',
+    appId: '1:977939978165:android:5e959aeb433168428e2bfc',
+    messagingSenderId: '977939978165',
+    projectId: 'find-pe-f4c17',
+    storageBucket: 'find-pe-f4c17.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCsAI2Te9yvyp8-zoN_nn4GFy-q5eVe57A',
-    appId: '1:238929071368:ios:cb8b249d9246584c63b0bd',
-    messagingSenderId: '238929071368',
-    projectId: 'find-pe-92d06',
-    storageBucket: 'find-pe-92d06.firebasestorage.app',
+    apiKey: 'AIzaSyAY9mE4xsVsJKHM-7Ki-T68CLn7KY6W7zk',
+    appId: '1:977939978165:ios:243d7664e3df0d428e2bfc',
+    messagingSenderId: '977939978165',
+    projectId: 'find-pe-f4c17',
+    storageBucket: 'find-pe-f4c17.firebasestorage.app',
     iosBundleId: 'com.example.findPe',
   );
 }

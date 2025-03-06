@@ -16,7 +16,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "uz.find.pe"
+    namespace = "uz.findpe"
     compileSdk = 34
 
     ndkVersion = "27.0.12077973"
@@ -32,7 +32,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "uz.find.pe"
+        applicationId = "uz.findpe"
         minSdk = 23
         targetSdk = 34
         versionCode = 2
